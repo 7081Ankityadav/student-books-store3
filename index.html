@@ -4,127 +4,731 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Student Books Store</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f7ff;
+        color: #17203a;
+        line-height: 1.6;
+    }
+
+    /* Navbar */
+    nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #101a3d;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 7%;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+    }
+
+    .logo {
+        font-size: 23px;
+        font-weight: bold;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        gap: 25px;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    nav a:hover {
+        color: #ffd54a;
+    }
+
+    /* Hero */
+    .hero {
+        min-height: 500px;
+        padding: 55px 7%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 45px;
+        background: linear-gradient(135deg, #eef2ff, #fff5ff);
+    }
+
+    .hero-text {
+        flex: 1;
+    }
+
+    .tag {
+        display: inline-block;
+        background: #e4e7ff;
+        color: #3638bd;
+        padding: 7px 15px;
+        border-radius: 30px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .hero h1 {
+        font-size: clamp(38px, 5vw, 62px);
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+        color: #3949db;
+    }
+
+    .quote {
+        font-size: 20px;
+        color: #4c5368;
+        max-width: 650px;
+        margin-bottom: 28px;
+    }
+
+    .main-btn {
+        display: inline-block;
+        border: none;
+        text-decoration: none;
+        background: linear-gradient(135deg, #4b3df5, #6a35dc);
+        color: white;
+        padding: 13px 25px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 7px 18px rgba(75,61,245,0.25);
+        transition: 0.25s;
+    }
+
+    .main-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .hero-img {
+        flex: 0 0 430px;
+    }
+
+    .hero-img img {
+        width: 100%;
+        height: 390px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+    }
+
+    /* Sections */
+    .section {
+        max-width: 1200px;
+        margin: auto;
+        padding: 55px 25px;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 30px;
+    }
+
+    /* Books */
+    .books {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .book-card {
+        background: white;
+        padding: 25px;
+        border-radius: 18px;
+        box-shadow: 0 7px 25px rgba(35,40,80,0.10);
+        transition: 0.25s;
+        border: 1px solid #edf0fa;
+    }
+
+    .book-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 15px 30px rgba(35,40,80,0.15);
+    }
+
+    .book-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f0ff;
+        font-size: 34px;
+        margin-bottom: 15px;
+    }
+
+    .book-card h3 {
+        font-size: 22px;
+        margin-bottom: 7px;
+    }
+
+    .price {
+        color: #159447;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 17px;
+    }
+
+    .pay-btn,
+    .scanner-btn {
+        width: 100%;
+        padding: 11px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+
+    .pay-btn {
+        border: none;
+        background: #4b3df5;
+        color: white;
+        margin-bottom: 9px;
+    }
+
+    .scanner-btn {
+        border: 1px solid #4b3df5;
+        background: white;
+        color: #4b3df5;
+    }
+
+    .pay-btn:hover,
+    .scanner-btn:hover {
+        transform: scale(1.02);
+    }
+
+    /* Info boxes */
+    .info-box {
+        margin-top: 25px;
+        padding: 25px;
+        border-radius: 15px;
+        background: white;
+        border: 1px solid #dce3ff;
+        box-shadow: 0 5px 18px rgba(30,40,80,0.07);
+    }
+
+    .info-box h2 {
+        margin-bottom: 15px;
+    }
+
+    /* YouTube */
+    .youtube-box {
+        background: #eef6ff;
+    }
+
+    .search-row {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-row input {
+        flex: 1;
+        padding: 13px;
+        border: 1px solid #ccd3e5;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .search-row button {
+        border: none;
+        background: #4b3df5;
+        color: white;
+        padding: 0 25px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* Web development */
+    .web-box {
+        background: #edfff8;
+        border-color: #bcebd9;
+    }
+
+    .web-box a {
+        color: #087d5a;
+        font-weight: bold;
+    }
+
+    /* Payment table */
+    .payment-box {
+        background: #fffaf0;
+        border-color: #f2dfb4;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    th, td {
+        padding: 14px;
+        border: 1px solid #e2e5ec;
+        text-align: left;
+    }
+
+    th {
+        background: #f0f2ff;
+    }
+
+    .small-pay {
+        background: #4b3df5;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .small-scan {
+        background: white;
+        color: #4b3df5;
+        border: 1px solid #4b3df5;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 5px;
+    }
+
+    /* WhatsApp */
+    .whatsapp-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background: #f5edff;
+        border-color: #ddc5ff;
+    }
+
+    .whatsapp-btn {
+        background: #20a95b;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    /* Contact */
+    .contact {
+        background: #eaf4ff;
+    }
+
+    .contact p {
+        margin: 8px 0;
+    }
+
+    /* Footer */
+    footer {
+        background: #101a3d;
+        color: white;
+        text-align: center;
+        padding: 28px 15px;
+    }
+
+    /* Modal */
+    .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-content {
+        background: white;
+        width: min(420px, 100%);
+        padding: 25px;
+        border-radius: 18px;
+        text-align: center;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 27px;
+        cursor: pointer;
+    }
+
+    .modal-content img {
+        max-width: 280px;
+        width: 100%;
+        margin: 15px auto;
+        border-radius: 10px;
+    }
+
+    .upi-text {
+        font-weight: bold;
+        color: #3638bd;
+        word-break: break-all;
+    }
+
+    /* Mobile */
+    @media (max-width: 850px) {
+        nav {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        nav ul {
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-img {
+            flex-basis: auto;
+            width: min(430px, 100%);
+        }
+
+        .books {
+            grid-template-columns: 1fr;
+        }
+
+        .whatsapp-box {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .hero {
+            padding: 40px 20px;
+        }
+
+        .section {
+            padding: 40px 15px;
+        }
+
+        .hero-img img {
+            height: 300px;
+        }
+
+        .search-row {
+            flex-direction: column;
+        }
+
+        .search-row button {
+            padding: 12px;
+        }
+
+        th, td {
+            padding: 9px;
+            font-size: 14px;
+        }
+    }
+</style>
 </head>
 
 <body>
 
-<h1><b>Welcome to Student Books Store</b></h1>
+<!-- Navbar -->
+<nav>
+    <div class="logo">📚 Student Books Store</div>
+    <ul>
+        <li><a href="#home">🏠 Home</a></li>
+        <li><a href="#books">📚 Books</a></li>
+        <li><a href="#learn">🎓 Learn</a></li>
+        <li><a href="#contact">📞 Contact</a></li>
+    </ul>
+</nav>
 
-<h2>Education is like a lioness’s milk — whoever drinks it will roar ⭐</h2>
+<!-- Hero -->
+<section class="hero" id="home">
+    <div class="hero-text">
+        <span class="tag">👋 Welcome</span>
+        <h1>Welcome to<br><span>Student Books Store</span></h1>
+        <p class="quote">
+            “Education is like a lioness’s milk — whoever drinks it will roar ⭐”
+        </p>
+        <a href="#books" class="main-btn">📚 Explore Books</a>
+    </div>
 
-<img src="https://www.saraswatipuja.org/images/photo-gallery-big-9.jpg"
-alt="Saraswati"
-height="300" width="300">
+    <div class="hero-img">
+        <img src="https://www.saraswatipuja.org/images/photo-gallery-big-9.jpg"
+             alt="Saraswati">
+    </div>
+</section>
 
+<!-- Books -->
+<section class="section" id="books">
+    <h2 class="section-title">📚 Our Books</h2>
 
+    <div class="books">
 
-<hr>
-<h2>1.) Buy NCERT Books Online ⭐</h2>
+        <div class="book-card">
+            <div class="book-icon">📘</div>
+            <h3>Class 10 Science</h3>
+            <div class="price">₹175</div>
+            <button class="pay-btn" onclick="payNow('Class 10 Science', 175)">
+                🛒 Pay Now
+            </button>
+            <button class="scanner-btn" onclick="showQR('Class 10 Science', 175)">
+                📱 Pay via Scanner
+            </button>
+        </div>
 
-<a href="https://www.flipkart.com/books/ncert~contributor/pr?sid=bks" target="_blank">
-Click Here to Buy
-</a>
+        <div class="book-card">
+            <div class="book-icon">⚛️</div>
+            <h3>Class 11 Physics</h3>
+            <div class="price">₹210</div>
+            <button class="pay-btn" onclick="payNow('Class 11 Physics', 210)">
+                🛒 Pay Now
+            </button>
+            <button class="scanner-btn" onclick="showQR('Class 11 Physics', 210)">
+                📱 Pay via Scanner
+            </button>
+        </div>
 
-<hr>
+        <div class="book-card">
+            <div class="book-icon">💡</div>
+            <h3>Class 12 Physics</h3>
+            <div class="price">₹200</div>
+            <button class="pay-btn" onclick="payNow('Class 12 Physics', 200)">
+                🛒 Pay Now
+            </button>
+            <button class="scanner-btn" onclick="showQR('Class 12 Physics', 200)">
+                📱 Pay via Scanner
+            </button>
+        </div>
 
-<h2>2.) Search More Knowledge on YouTube</h2>
+    </div>
+</section>
 
-<form action="https://www.youtube.com/results?">
-<input type="text" name="search_query" placeholder="Search on YouTube">
-<button type="submit">Search</button>
-</form>
+<!-- YouTube -->
+<section class="section">
+    <div class="info-box youtube-box">
+        <h2>▶️ Search More Knowledge on YouTube</h2>
 
-<hr>
+        <div class="search-row">
+            <input id="youtubeSearch" type="text"
+                   placeholder="Search on YouTube...">
+            <button onclick="searchYouTube()">Search</button>
+        </div>
+    </div>
+</section>
 
-<h2>3.) Learn Web Development</h2   >
+<!-- Web Development -->
+<section class="section" id="learn">
+    <div class="info-box web-box">
+        <h2>💻 Learn Web Development</h2>
+        <p>
+            Learn HTML, CSS, JavaScript and Web APIs from MDN.
+        </p>
+        <br>
+        <a href="https://developer.mozilla.org/en-US/docs/MDN"
+           target="_blank">
+            Explore HTML, CSS, JavaScript & Web APIs →
+        </a>
+    </div>
+</section>
 
-<a href="https://developer.mozilla.org/en-US/docs/MDN" target="_blank">
-Click here for HTML, CSS, JavaScript, Web APIs
-</a>
+<!-- Payment -->
+<section class="section">
+    <div class="info-box payment-box">
+        <h2>💳 Buy Physical Books (Pay via UPI)</h2>
 
-<hr>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Book</th>
+                    <th>Price</th>
+                    <th>Pay</th>
+                </tr>
 
+                <tr>
+                    <td>Class 10 Science</td>
+                    <td>₹175</td>
+                    <td>
+                        <button class="small-pay"
+                                onclick="payNow('Class 10 Science', 175)">
+                            Pay Now
+                        </button>
+                        <button class="small-scan"
+                                onclick="showQR('Class 10 Science', 175)">
+                            Scanner
+                        </button>
+                    </td>
+                </tr>
 
-<h2>4.) Buy Physical Books (Pay via UPI)</h2>
+                <tr>
+                    <td>Class 11 Physics</td>
+                    <td>₹210</td>
+                    <td>
+                        <button class="small-pay"
+                                onclick="payNow('Class 11 Physics', 210)">
+                            Pay Now
+                        </button>
+                        <button class="small-scan"
+                                onclick="showQR('Class 11 Physics', 210)">
+                            Scanner
+                        </button>
+                    </td>
+                </tr>
 
-<table border="1">
-<tr>
-<th>Book</th>
-<th>Price</th>
-<th>Pay</th>
-</tr>
+                <tr>
+                    <td>Class 12 Physics</td>
+                    <td>₹200</td>
+                    <td>
+                        <button class="small-pay"
+                                onclick="payNow('Class 12 Physics', 200)">
+                            Pay Now
+                        </button>
+                        <button class="small-scan"
+                                onclick="showQR('Class 12 Physics', 200)">
+                            Scanner
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</section>
 
-<tr>
-<td>Class 10 Science</td>
-<td>₹175</td>
-<td>
-<a href="upi://pay?pa=ay1990661-1@okaxis&pn=Ankit%20Yadav&am=175&cu=INR"></a>
-<button>Pay Now</button>
-<br>
+<!-- WhatsApp -->
+<section class="section">
+    <div class="info-box whatsapp-box">
+        <h2>📲 After payment please send screenshot on WhatsApp</h2>
 
-or
-<br> 
-<a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=ay1990661-1@okaxis&pn=Ankit%20Yadav&am=15&cu=INR"><button type="button">pay via scanner</button> </a>
-</a>
-</td>
-</tr>
+        <a class="whatsapp-btn"
+           href="https://wa.me/919696125239"
+           target="_blank">
+            Send Screenshot on WhatsApp
+        </a>
+    </div>
+</section>
 
-<tr>
-<td>Class 11 Physics</td>
-<td>₹210</td>
-<td>
-<a href="upi://pay?pa=ay1990661-1@okaxis&pn=Ankit%20Yadav&am=210&cu=INR"></a>
-<button>Pay Now</button>
-<br>
-
-or
-<br> 
-<a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=ay1990661-1@okaxis&pn=Ankit%20Yadav&am=15&cu=INR"><button type="button">pay via scanner</button> </a>
-
-</a>
-</td>
-</tr>
-
-<tr>
-<td>Class 12 Physics</td>
-<td>₹200</td>
-<td>
-<a href="upi://pay?pa=ay1990661-1@okaxis&pn=Ankit%20Yadav&am=200&cu=INR">
-<button>Pay Now</button></a>
-<br>
-
-or
-<br> 
-<a href="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=ay1990661-1@okaxis&pn=Ankit%20Yadav&am=15&cu=INR"><button type="button">pay via scanner</button> </a>
-
-
-</td>
-</tr>
-
-</table>
-
-<hr>
-
-<h2>
-5.) After payment please send screenshot on WhatsApp
-</h2>
-
-<a href="https://wa.me/919696125239" target="_blank">
-Send Screenshot on WhatsApp
-</a>
-
-<hr>
+<!-- Contact -->
+<section class="section" id="contact">
+    <div class="info-box contact">
+        <h2>📞 Contact</h2>
+        <p>📧 Email: ay1990661@gmail.com</p>
+        <p>📱 Phone: 9696125239</p>
+    </div>
+</section>
 
 <footer>
-
-<h2>6.) Contact</h2>
-
-<p>Email: ay1990661@gmail.com</p>
-<p>Phone: 9696125239</p>
-
-<h3>Made with ❤️ by ANKIT</h3>
-
+    <h3>Made with ❤️ by ANKIT</h3>
 </footer>
 
+<!-- QR Modal -->
+<div class="modal" id="qrModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <h2>📱 Scan & Pay</h2>
+        <p id="selectedBook"></p>
+        <p class="upi-text">UPI: ay1990661-1@okaxis</p>
+
+        <img id="qrImage" src="" alt="UPI QR Code">
+
+        <p id="selectedAmount"></p>
+
+        <button class="main-btn" onclick="closeModal()">
+            Done
+        </button>
+    </div>
+</div>
+
+<script>
+    // UPI ID
+    const upiId = "ay1990661-1@okaxis";
+    const payeeName = "Ankit Yadav";
+
+    // Direct UPI payment
+    function payNow(book, amount) {
+        const upiUrl =
+            `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+
+        window.location.href = upiUrl;
+    }
+
+    // Create QR and show modal
+    function showQR(book, amount) {
+        const upiUrl =
+            `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+
+        const qrUrl =
+            `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`;
+
+        document.getElementById("selectedBook").textContent = book;
+        document.getElementById("selectedAmount").textContent =
+            "Amount: ₹" + amount;
+
+        document.getElementById("qrImage").src = qrUrl;
+        document.getElementById("qrModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("qrModal").style.display = "none";
+    }
+
+    // YouTube search
+    function searchYouTube() {
+        const query = document.getElementById("youtubeSearch").value.trim();
+
+        if (query === "") {
+            alert("Please enter something to search.");
+            return;
+        }
+
+        const url =
+            "https://www.youtube.com/results?search_query=" +
+            encodeURIComponent(query);
+
+        window.open(url, "_blank");
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById("qrModal");
+
+        if (event.target === modal) {
+            closeModal();
+        }
+    };
+</script>
+
 </body>
-</html
+</html>
